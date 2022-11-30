@@ -8,6 +8,10 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 //把引琴設定成hbs
 
+//setting static files
+app.use(express.static('public'))
+
+
 app.get('/', (req, res) => {
   // res.send(`hi hello`)
   res.render('index')
