@@ -12,9 +12,18 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 
+// app.get('/', (req, res) => {
+//   // res.send(`hi hello`)
+//   res.render('index')
+// })
 app.get('/', (req, res) => {
-  // res.send(`hi hello`)
-  res.render('index')
+  const restaurant = {
+    id: 1,
+    title: 'Sababa 沙巴巴中東美食',
+    image: 'https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg'
+  }
+  // past the movie data into 'index' partial template
+  res.render('index', { firstR: restaurant });
 })
 
 app.listen(port, () => {
