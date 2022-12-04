@@ -4,6 +4,8 @@ const port = 4000
 
 const exphbs = require('express-handlebars')
 //載入express-handlebars
+const restaurantList = require('./restaurant.json')
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 //把引琴設定成hbs
@@ -17,13 +19,14 @@ app.use(express.static('public'))
 //   res.render('index')
 // })
 app.get('/', (req, res) => {
-  const restaurant = {
-    id: 1,
-    title: 'Sababa 沙巴巴中東美食',
-    image: 'https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg'
-  }
+
   // past the movie data into 'index' partial template
-  res.render('index', { firstR: restaurant });
+  res.render('index', { restaurants: restaurantList.results });
+})
+
+app.get('/', (req, res) => {
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+  res.render('index', { number: numbers })
 })
 
 app.listen(port, () => {
