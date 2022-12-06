@@ -1,3 +1,4 @@
+const { query } = require('express')
 const express = require('express')
 const app = express()
 const port = 4000
@@ -24,9 +25,19 @@ app.get('/', (req, res) => {
   res.render('index', { restaurants: restaurantList.results });
 })
 
-app.get('/', (req, res) => {
-  const numbers = [1, 2, 3, 4, 5, 6, 7, 8]
-  res.render('index', { number: numbers })
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  const restaurantData = restaurantList.results.filter(restaurant => {
+    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
+  })
+  res.render('index', { restaurants: restaurantData, keyword: keyword })
+})
+
+app.get('/restaurants/:restaurant_id', (req, res) => {
+  const restaurant = restaurantList.results.find(restaurant =>
+    restaurant.id.toString() === req.params.restaurant_id)
+  console.log('request', req.params)
+  res.render('show', { restaurant: restaurant })
 })
 
 app.listen(port, () => {
