@@ -1,26 +1,38 @@
 const { query } = require('express')
 const express = require('express')
-const app = express()
+const mongoose = require('mongoose')
 const port = 4000
-
 const exphbs = require('express-handlebars')
 //載入express-handlebars
 const restaurantList = require('./restaurant.json')
+const app = express()
 
+// 加入這段 code, 僅在非正式環境時, 使用 dotenv
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+//connect to mongoDB
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// 取得資料庫連線狀態
+const db = mongoose.connection
+// 連線異常
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+// 連線成功
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
+//把引琴設定成hbs
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-//把引琴設定成hbs
 
 //setting static files
 app.use(express.static('public'))
 
-
-// app.get('/', (req, res) => {
-//   // res.send(`hi hello`)
-//   res.render('index')
-// })
+// search & sort 
 app.get('/', (req, res) => {
-
   // past the movie data into 'index' partial template
   res.render('index', { restaurants: restaurantList.results });
 })
