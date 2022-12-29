@@ -4,8 +4,8 @@ const mongoose = require('mongoose')
 const port = 4000
 const exphbs = require('express-handlebars')
 //載入express-handlebars
-const restaurantList = require('./restaurant.json')
 const app = express()
+const RestaurantList = require('./models/restaurant')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -33,8 +33,11 @@ app.use(express.static('public'))
 
 // search & sort 
 app.get('/', (req, res) => {
-  // past the movie data into 'index' partial template
-  res.render('index', { restaurants: restaurantList.results });
+  // res.render('index', { restaurants: restaurantList.results });
+  RestaurantList.find()
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
+    .catch(error => console.error(error))
 })
 
 app.get('/search', (req, res) => {
