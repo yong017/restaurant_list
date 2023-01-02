@@ -17,7 +17,7 @@ const restaurantSchema = new Schema({
   },
   image: {
     type: String,
-    require: true
+    required: true
   },
   location: {
     type: String,
@@ -37,7 +37,7 @@ const restaurantSchema = new Schema({
   },
   description: {
     type: String,
-    reuqired: true
+    required: true
   },
 })
 module.exports = mongoose.model('Restaurant', restaurantSchema)

@@ -6,6 +6,8 @@ const exphbs = require('express-handlebars')
 //載入express-handlebars
 const app = express()
 const RestaurantList = require('./models/restaurant')
+const restaurantList = require('./restaurant.json')
+const bodyParser = require('body-parser')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -28,6 +30,8 @@ db.once('open', () => {
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
 //setting static files
 app.use(express.static('public'))
 
@@ -38,6 +42,17 @@ app.get('/', (req, res) => {
     .lean()
     .then(restaurants => res.render('index', { restaurants }))
     .catch(error => console.error(error))
+})
+
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  console.log(req.body)
+  return RestaurantList.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 app.get('/search', (req, res) => {
@@ -54,6 +69,7 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
   console.log('request', req.params)
   res.render('show', { restaurant: restaurant })
 })
+
 
 app.listen(port, () => {
   console.log(`working on ${port}`)

@@ -1,0 +1,73 @@
+<form action="/restaurants" method="POST" id="form">
+  {{!-- name --}}
+  <div class="col-1">
+    <label for="name" class="col-1">名稱</label>
+    <div class="col-1">
+      <input type="text" class="col-1" name="name" id="name" placeholder="吳留手-麗水店">
+    </div>
+  </div>
+  {{!-- category --}}
+  <div class="col-2">
+    <label for="category" class="col-2">類別</label>
+    <div class="col-2">
+      <select class="col-2" name="category" id="category" aria-label="default select example">
+        <option>中東料理</option>
+        <option>日本料理</option>
+        <option>義式餐廳</option>
+        <option>美式</option>
+        <option>酒吧</option>
+        <option>咖啡</option>
+      </select>
+    </div>
+  </div>
+  {{!-- image --}}
+  <div class="col-3">
+    <label for="image" class="col-3"> Image Link </label>
+    <div class="col-3">
+      <input type="text" class="col-3" name="image" id="image" placeholder="http://...." required>
+    </div>
+  </div>
+  {{!-- location --}}
+  <div class="col-4">
+    <label for="location" class="col-4">地址</label>
+    <div class="col-4">
+      <input type="text" class="col-4" name="location" id="location" placeholder="台北市大安區ㄡ" required>
+    </div>
+  </div>
+  {{!-- phone --}}
+  <div class="col-5">
+    <label for="phone" class="col-5">電話</label>
+    <div class="col-5">
+      <input type="text" class="col-5" name="phone" id="phone" placeholder="02 2396 0688" required>
+    </div>
+  </div>
+  {{!-- google_map --}}
+  <div class="col-6">
+    <label for="google_map" class="col-6">google_map</label>
+    <div class="col-6">
+      <input type="text" class="col-6" name="google_map" id="google_map" placeholder="http://goo.gl/maps/...."
+        reqquired>
+    </div>
+  </div>
+  {{!-- rating --}}
+  <div class="col-7">
+    <label for="rating" class="col-7">評分</label>
+    <div class="col-7">
+      <input type="text" class="col-7" name="rating" id="rating" placeholder="4.9" required>
+    </div>
+  </div>
+  {{!-- description --}}
+  <div class="col-8">
+    <label for="description" class="col-8">餐廳描述</label>
+    <div class="col-8">
+      <textarea type="text" class="col-8" name="description" id="description" placeholder="必點伊比利豬肋條..."
+        required></textarea>
+    </div>
+  </div>
+  {{!-- Button--}}
+  <div>
+    <button type="submit" class="btn">Create</button>
+    <a href="/" class="btn" role="button">BACK</a>
+  </div>
+
+</form>
