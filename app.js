@@ -5,7 +5,7 @@ const port = 4000
 const exphbs = require('express-handlebars')
 //載入express-handlebars
 const app = express()
-const RestaurantList = require('./models/restaurant')
+const RestaurantList = require('./models/restaurants')
 const restaurantList = require('./restaurant.json')
 const bodyParser = require('body-parser')
 
@@ -44,6 +44,15 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error))
 })
 
+// show page
+app.get('/restaurants/:restaurant_id', (req, res) => {
+  const id = req.params.restaurant_id
+  return RestaurantList.findOne({ id }, { _id: 0 })
+    .lean()
+    .then(restaurant => res.render('show', { restaurant }))
+    .catch(error => console.log(error))
+})
+
 app.get('/restaurants/new', (req, res) => {
   return res.render('new')
 })
@@ -62,14 +71,6 @@ app.get('/search', (req, res) => {
   })
   res.render('index', { restaurants: restaurantData, keyword: keyword })
 })
-
-app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant =>
-    restaurant.id.toString() === req.params.restaurant_id)
-  console.log('request', req.params)
-  res.render('show', { restaurant: restaurant })
-})
-
 
 app.listen(port, () => {
   console.log(`working on ${port}`)
