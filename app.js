@@ -44,6 +44,19 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error))
 })
 
+// create new page
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  console.log(req.body)
+  return RestaurantList.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+
 // show page
 app.get('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
@@ -53,14 +66,20 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.get('/restaurants/new', (req, res) => {
-  return res.render('new')
+// edit page
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return RestaurantList.findOne({ id }, { _id: 0 })
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(error => console.log(error))
 })
 
-app.post('/restaurants', (req, res) => {
-  console.log(req.body)
-  return RestaurantList.create(req.body)
-    .then(() => res.redirect('/'))
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  console.log(id, req.body)
+
+    .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 
