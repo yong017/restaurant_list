@@ -44,6 +44,14 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error))
 })
 
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  const restaurantData = restaurantList.results.filter(restaurant => {
+    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+  })
+  res.render('index', { restaurants: restaurantData, keyword: keyword })
+}) //restaurantList.results is function 換成 RestaurantList 變成不是一個 function 
+
 // create new page
 app.get('/restaurants/new', (req, res) => {
   res.render('new')
@@ -71,6 +79,7 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
 // edit page
 app.get('/restaurants/:restaurant_id/edit', (req, res) => {
   const _id = req.params.restaurant_id
+  console.log(_id)
   return RestaurantList.findById(_id)
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
@@ -81,11 +90,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const _id = req.params.restaurant_id
   const body = req.body
   console.log(body)
-  return RestaurantList.findById(_id)
-    .then(data => {
-      data.body = body
-      return data.save()
-    })
+  return RestaurantList.findByIdAndUpdate(_id, body)
     .then(() => res.redirect(`/restaurants/${_id}`))
     .catch(error => console.log(error))
 })
@@ -97,14 +102,6 @@ app.post('/restaurants/:restaurant_id/delete', (req, res) => {
     .then(data => data.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
-})
-
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  const restaurantData = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurants: restaurantData, keyword: keyword })
 })
 
 app.listen(port, () => {
